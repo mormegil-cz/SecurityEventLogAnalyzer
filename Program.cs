@@ -85,7 +85,7 @@ namespace SecurityEventLogAnalyzer
             try
             {
                 IPAddress addr;
-                if (!IPAddress.TryParse(ip, out addr))
+                if (!IPAddress.TryParse(ip, out addr) || addr.Equals(IPAddress.Any) || addr.Equals(IPAddress.IPv6Any))
                 {
                     dnsCache.Add(ip, "");
                     return "";
