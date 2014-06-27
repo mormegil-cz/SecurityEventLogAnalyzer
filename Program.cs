@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -13,7 +11,7 @@ namespace SecurityEventLogAnalyzer
         static void Main(string[] args)
         {
             var dict = new Dictionary<Entry, Values>();
-            var cnt = 0;
+            //var cnt = 0;
             using (var eventLog = new EventLog("Security"))
             {
                 foreach (EventLogEntry entry in eventLog.Entries)
@@ -21,8 +19,8 @@ namespace SecurityEventLogAnalyzer
                     string username = null;
                     string domain = null;
                     string machine = null;
-                    bool found = false;
-                    bool success = false;
+                    bool found;
+                    bool success;
                     switch (entry.InstanceId)
                     {
                         case 4624:
@@ -46,11 +44,15 @@ namespace SecurityEventLogAnalyzer
                             //}
                             //return;
                             break;
+                        default:
+                            found = false;
+                            success = false;
+                            break;
                     }
 
                     if (found)
                     {
-                        var port = entry.ReplacementStrings[19];
+                        //var port = entry.ReplacementStrings[19];
                         var dictEntry = new Entry { Username = String.Format("{0}\\{1}", domain, username), Machine = machine, Success = success };
                         Values value;
                         if (!dict.TryGetValue(dictEntry, out value))
